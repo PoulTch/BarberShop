@@ -1,0 +1,22 @@
+<h2>Список клиентов:</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Datestamp</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+      <% db = get_db %>
+    <% db.execute 'select * from Users order by id desc' do |row| %>
+    <tr>
+      <th scope="row"><%= row['id'] %></th>
+      <td><%= row['username'] %></td>
+      <td><%= row['datestamp'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

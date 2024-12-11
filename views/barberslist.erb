@@ -1,0 +1,21 @@
+<h2>Список парикмахеров:</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+            
+    </tr>
+  </thead>
+  <tbody>
+    <% db = get_db %>
+    <% db.execute 'select * from Barberslist' do |row| %>
+    <tr>
+      <th scope="row"><%= row['id'] %></th>
+      <td><%= row['barbername'] %></td>
+      
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -7,7 +7,6 @@ def get_db
 	db = SQLite3::Database.new 'barbershop.db'
 	db.results_as_hash = true
 	return db                
-
 end
 
 configure do 
@@ -21,7 +20,32 @@ configure do
     	"datestamp" TEXT,
     	"barber" TEXT,
     	"color" TEXT
-	)' 
+	)'
+	db.execute 'CREATE TABLE IF NOT EXISTS 
+	"Barberslist"
+	("id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    	"barbername" TEXT
+    )'
+
+    db = get_db
+	db.execute 'insert into
+		Barberslist (barbername) values (?)', 
+		[
+		'Jessie Pinkman'
+		]
+
+	db.execute 'insert into
+		Barberslist (barbername) values (?)', 
+		[
+		'Walter White'
+		]
+
+	db.execute 'insert into
+		Barberslist (barbername) values (?)', 
+		[
+		'Gus Fring'
+		]				
+
 end	
 	
 get '/' do
@@ -95,9 +119,21 @@ post '/contacts' do
 
 end
 
-get '/showusers' do
-  erb "Hello World"
+get '/barberslist' do
+ 	               	                                                      
+	erb :barberslist
+
 end
+
+get '/showusers' do
+	               	                                                      
+	erb :showusers
+
+end
+
+
+	
+
 
                                                                                                                                                    
 	
