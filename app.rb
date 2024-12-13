@@ -22,6 +22,11 @@ def get_db
 	return db                
 end
 
+before do
+	db = get_db
+    @results_b = db.execute 'select * from Barberslist'
+end
+
 configure do 
 	db = get_db
 	db.execute 'CREATE TABLE IF NOT EXISTS 
@@ -55,9 +60,6 @@ end
 
 get '/visit' do
 
-	db = get_db
-    @results_b = db.execute 'select * from Barberslist'
-
 	erb :visit
 end
 
@@ -69,10 +71,13 @@ post '/visit' do
 	@barber = params[:barber]
 	@color = params[:color]
 
+	
+
 	# хеш
 	hh = { 	:username => 'Введите имя',
 			:phone => 'Введите телефон',
-			:datetime => 'Введите дату и время' }
+			:datetime => 'Введите дату и время',
+			}
 
 	@error = hh.select {|key,_| params[key] == ""}.values.join(", ")
 
@@ -121,9 +126,6 @@ post '/contacts' do
 end
 
 get '/barberslist' do
-
-	db = get_db
-    @results_b = db.execute 'select * from Barberslist'
  	               	                                                      
 	erb :barberslist
 
