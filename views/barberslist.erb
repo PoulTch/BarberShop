@@ -3,18 +3,16 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">id</th>
       <th scope="col">Name</th>
             
     </tr>
   </thead>
   <tbody>
-    <% db = get_db %>
-    <% db.execute 'select * from Barberslist' do |row| %>
+    <% @results_b.each do |row| %>
     <tr>
-      <th scope="row"><%= row['id'] %></th>
+      <th><%= row['id'] %></th>
       <td><%= row['barbername'] %></td>
-      
     </tr>
     <% end %>
   </tbody>

@@ -38,10 +38,10 @@ $(function() {
   <div class="form-group">
     <label>Ваш парикмахер:</label>
     <select name="barber" class="form-control">
-      <% db = get_db %>
-      <% db.execute 'select * from Barberslist' do |row| %>
-      <option <%= @barber == row['barbername'] ? 'selected' : '' %>><%=row['barbername'] %></option>
-      <% end %>
+      <option <%= @barber == 'Jessie Pinkman' ? 'selected' : '' %>>Jessie Pinkman</option>
+      <option <%= @barber == 'Walter White' ? 'selected' : '' %>>Walter White</option>
+      <option <%= @barber == 'Gus Fring' ? 'selected' : '' %>>Gus Fring</option>
+      </option>      
     </select>
   </div>
 

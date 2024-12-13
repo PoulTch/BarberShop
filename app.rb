@@ -3,6 +3,19 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sqlite3'
 
+def is_barber_exists? db, barbername
+	db.execute('select * from Barberslist where barbername=?', [barbername]).length > 0
+end
+
+def seed_db db, barbers
+	barbers.each do |barber|
+		if !is_barber_exists? db, barber
+			db.execute 'insert into Barberslist (barbername) values (?)', [barber]
+		end
+	end
+end
+
+
 def get_db
 	db = SQLite3::Database.new 'barbershop.db'
 	db.results_as_hash = true
@@ -27,26 +40,10 @@ configure do
     	"barbername" TEXT
     )'
 
-    db = get_db
-	db.execute 'insert into
-		Barberslist (barbername) values (?)', 
-		[
-		'Jessie Pinkman'
-		]
+    seed_db db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut']
 
-	db.execute 'insert into
-		Barberslist (barbername) values (?)', 
-		[
-		'Walter White'
-		]
-
-	db.execute 'insert into
-		Barberslist (barbername) values (?)', 
-		[
-		'Gus Fring'
-		]				
-
-end	
+end			
+	
 	
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
@@ -57,6 +54,10 @@ get '/about' do
 end
 
 get '/visit' do
+
+	db = get_db
+    @results_b = db.execute 'select * from Barberslist'
+
 	erb :visit
 end
 
@@ -89,7 +90,8 @@ post '/visit' do
 			barber,
 			color
 		)
-		values (?, ?, ?, ?, ?)', [@username, @phone, @datetime, @barber, @color]	
+		values (?, ?, ?, ?, ?)', [@username, @phone, @datetime, @barber, @color]
+
 
 	erb "OK, username is #{@username}, #{@phone}, #{@datetime}, #{@barber}, #{@color}"
 
@@ -102,7 +104,6 @@ end
 post '/contacts' do                                                                                                                                
 	@email = params[:email]                                                                                                                    
 	@story = params[:story]
-
 
 		# хеш
 	hh = { 	:email => 'Введите email',
@@ -120,13 +121,19 @@ post '/contacts' do
 end
 
 get '/barberslist' do
+
+	db = get_db
+    @results_b = db.execute 'select * from Barberslist'
  	               	                                                      
 	erb :barberslist
 
 end
 
 get '/showusers' do
-	               	                                                      
+
+	db = get_db 
+    @results = db.execute 'select * from Users order by id desc'               	                                                      
+	
 	erb :showusers
 
 end
